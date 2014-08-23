@@ -1,5 +1,19 @@
-from constants import *
-import pygame
+###############################################################################
+#                                                                             #
+# bounceables.py                                                              #
+#                                                                             #
+# Class definitions for obhects off of which the ball can bounce              #
+#                                                                             #
+# Important classes                                                           #
+# Wall                                                                        #
+# Paddle                                                                      #
+# Block                                                                       #
+#                                                                             #
+# Note also three rules for the game physics.                                 #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
 #AIAR: Angle of incidence equals angle of reflection, or in this 
 #case, we multiply one of the dx's or dy's by -1
 
@@ -10,6 +24,9 @@ import pygame
 
 #CORNER_ENABLED: If the ball hits in a small space designated the corner, 
 #it will multiply both dx and dy by -1.
+
+from constants import *
+import pygame
 
 #class Bounceable:
 #    def __init__(self):

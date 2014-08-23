@@ -1,3 +1,15 @@
+###############################################################################
+#                                                                             #
+# constants.py                                                                #
+#                                                                             #
+# contains config variables for the dimensions of the blocks, paddle, ball(s),#
+# screen size, colors, number of blocks per level, and some constants for the #
+# "physics"                                                                   #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
 #FPS = 30
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
