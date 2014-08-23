@@ -29,8 +29,8 @@ class Ball:
         self.ur_corner = pygame.Rect(self.y, self.x + (BALL_WIDTH - 2), 2, 2)
         self.lr_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x + (BALL_WIDTH - 2), 2, 2)
 
-    def get_corners(self);
-        return [self.ul_corner
+    def get_corners(self):
+        return self.ul_corner
 
     #move the x and y coordinates by dx and dy
     #update a few other things 
@@ -47,7 +47,6 @@ class Ball:
          self.ll_corner.move_ip(dx,dy)
          self.ur_corner.move_ip(dx,dy)
          self.lr_corner.move_ip(dx,dy)
-
 
     def ball_rect(self):
         return self.rect    

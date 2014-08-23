@@ -22,7 +22,6 @@ from pygame.locals import *
 from ball import *
 from constants import *
 
-
 pygame.init()
 DISPLAY = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 pygame.display.set_caption('SquidWrench Breakout - prototyped by Peter Bourgelais')

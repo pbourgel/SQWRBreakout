@@ -43,8 +43,17 @@ class Paddle():
     def on_collide(self, ballrect):
         if pygame.Rect.colliderect(self.ul_corner,ballrect.lr_corner) or pygame.Rect.colliderect(self.ur_corner,ballrect.ll_corner):
             return {'CORNER_ENABLED': ''}
-        int((ballrect.x + BALL_WIDTH) / 2)
-        
+        ball_center = int((ballrect.x + BALL_WIDTH) / 2)
+        warp_offset = ball_center - (self.x + (INSIDE_PADDLE_WIDTH / 2))
+        return {'WARP': warp_offset / BLOCK_WIDTH}
+
+    def move_paddle(self,direction):
+        if direction == '-' and self.x > PADDLE_SPEED:
+            self.x -= PADDLE_SPEED
+            self.rect.move(PADDLE_SPEED,0)
+        elif direction =='+' and (self.x + PADDLE_WIDTH < (SCREENWIDTH - PADDLE_SPEED):
+            self.x += PADDLE_SPEED
+            self.rect.move(PADDLE_SPEED,0)
 
 class Block():
     def __init__(self, ccounter, rct):
@@ -118,9 +127,10 @@ class Block():
                     return {'AIAR': 'y'} # Case I
                 elif ballrect.x + BALL_WIDTH >= inner_left_edge and ballrect.x <= inner_right_edge and ballrect.y > inner_upper_edge:
                     return {'AIAR': 'y'} # Case III
-                elif: #Cases II and IV, since the only case that is not a corner collision but is still a collision  is a case where we would reflect on the x axis.
+                else: #Cases II and IV, since the only case that is not a corner collision but is still a collision  is a case where we would reflect on the x axis.
                     return {'AIAR': 'x'}
-    #Changes
+
+    #Changes the brick color in response to a collision.
     def change_color(self):
         if self.ccounter == 5:
             self.color = BLUE
