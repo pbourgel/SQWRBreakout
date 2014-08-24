@@ -1,4 +1,4 @@
-SQWRBreakout
+myreakout
 ============
 
-A Breakout clone I built for the Squidwrench hackerspace (www.squidwrench.org)
+A simple Breakout clone made in Pygame
