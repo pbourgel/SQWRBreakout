@@ -47,6 +47,8 @@ def main():
     pygame.display.update()
 
     game_started = False
+    left_key_pressed = False
+    right_key_pressed = False
     while game_started == False:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -96,16 +98,34 @@ def main():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
-                    pdl.move_paddle('-')
-                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+                     left_key_pressed = True
+#                    pdl.move_paddle('-')
+#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 elif event.key == K_RIGHT:
-                    pdl.move_paddle('+')
-                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+                     right_key_pressed = True
+#                    pdl.move_paddle('+')
+#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 elif event.key == K_ESCAPE:
                     reset = True
+            if event.type == KEYUP:
+                if event.key == K_LEFT:
+                     left_key_pressed = False
+#                    pdl.move_paddle('-')
+#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+                elif event.key == K_RIGHT:
+                     right_key_pressed = False
+#                    pdl.move_paddle('+')
+#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 #if you wanted to make the paddle move around the level, which I believe exists in exactly ZERO
                 #Breakout/Arkanoid games (first time for everything, right?), you would add another conditional
                 #and tweak Paddle.move_paddle()
+        if left_key_pressed:
+           pdl.move_paddle('-')
+           pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+        if right_key_pressed:
+           pdl.move_paddle('+')
+           pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+        
         
         # check for victory condition (all blocks have ccounter == 0)
         # of course you would want to change this if you wanted multiple levels

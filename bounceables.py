@@ -145,6 +145,7 @@ class Block():
             elif ballrect.x + BALL_WIDTH >= inner_left_edge and ballrect.x <= inner_right_edge and ballrect.y > inner_upper_edge:
                 return {'AIAR': 'y'} # Case III
             else: #Cases II and IV, since the only case that is not a corner collision but is still a collision  is a case where we would reflect on the x axis.
+                print 'In case III'
                 return {'AIAR': 'x'}
 
     #Changes the brick color in response to a collision.
