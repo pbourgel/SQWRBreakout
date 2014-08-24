@@ -1,4 +1,4 @@
 myreakout
 ============
 
-A simple Breakout clone made in Pygame
+A simple Breakout clone made with Pygame
