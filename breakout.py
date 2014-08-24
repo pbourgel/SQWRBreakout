@@ -34,6 +34,7 @@ def main():
     bl = Ball(WHITE, BALL_TOP, BALL_LEFT, 0, 1)
     game_speed = 30
     speedup = 0
+    reset = False
 
     left_wall = Wall(0,1,1,SCREENHEIGHT,'x')
     top_wall = Wall(0,0,SCREENWIDTH,1,'y')
@@ -53,21 +54,57 @@ def main():
             if event.type == KEYDOWN and event.key == K_SPACE:
                 game_started = True
         pygame.display.update()
-    # move the ball
-#    bl.update_position()
-    # check for collisions against...
-    #     the walls
-#    for wall in walls:
-#        if pygame.Rect.colliderect(wall,bl.ball_rect()):
-#            bl.process_collision({'AIAR': wall.axis})
-    #     the blocks
-    #     the paddle
-    #     the bottom of the screen
-    # handle paddle movement
-    # check for victory condition (all blocks have ccounter == 0)
 
-    #tick the FPS clock
-#    FPSCLOCK.tick(game_speed)
+    while reset == False:
+        # move the ball
+        bl.update_position()
+        # check for collisions against...
+        #     the walls
+        for wall in walls:
+            if pygame.Rect.colliderect(wall,bl.ball_rect()):
+                bl.process_collision(wall.on_collide())
+        #     the blocks
+        for block in reversed(level_array):
+            if block.ccounter > 0 and pygame.Rect.colliderect(block.rect,bl.ball_rect()):
+                bl.process_collision(block.on_collide(bl.ball_rect()))
+        #Why reversed?  It's probably the case that the blocks towards the 
+        #end of the array (and therefore closer to the paddle) are more likely
+        #to collide with the ball on an arbitrary check, so I start from the 
+        #end and work my way back to save some loops.  We also do short-circuit
+        #evaluation via the color counter to spare some colliderect calls
+    
+    
+        #     the paddle
+        if pygame.Rect.colliderect(bl.ball_rect(),paddle_rect()):
+            bl.process_collision(paddle.on_collide(bl.ball_rect()))
+    
+        #     the bottom of the screen
+        if bl.ball_rect().bottom >= SCREEN_HEIGHT:
+            reset = True  
+    
+        # handle paddle movement
+        #by the way, if you had a powerup where the paddle has little guns
+        #attached to shoot the blocks, some keyboard handling code might be here.
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == KEYDOWN:
+                    if event.key == K_LEFT:
+                        pdl.move_paddle('-')
+                    elif event.key == K_RIGHT:
+                        pdl.move_paddle('+')
+                #if you wanted to make the paddle move around the level, which I believe exists in exactly ZERO
+                #Breakout/Arkanoid games (first time for everything, right?), you would add another conditional
+                #and tweak Paddle.move_paddle()
+        
+        # check for victory condition (all blocks have ccounter == 0)
+        # of course you would want to change this if you wanted multiple levels
+        if len(filter(level_array,lambda block: block.ccounter > 0)) == 0
+            reset = True
+    
+        #tick the FPS clock
+        FPSCLOCK.tick(game_speed)
 
 def load_and_draw_level():
     lf = LevelFactory()
@@ -79,7 +116,8 @@ def load_and_draw_level():
     return level_array
 
 def draw_level(arr):
-    pass
+    for block in arr:
+        pygame.draw.rect(DISPLAY, block.color, block.rect)
 
 if __name__ == '__main__':
     main()

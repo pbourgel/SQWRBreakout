@@ -127,25 +127,23 @@ class Block():
 #close succession, it's like wind chimes.  Maybe you should add that.
 
     def on_collide(self,ballrect):
-
-        if self.ccounter >= 1:
-            self.ccounter-=1
-            self.change_color()
-            if ballrect.collidelist([self.ul_corner,self.ll_corner,self.ur_corner,self.lr_corner]) > -1:
-                return {'CORNER_ENABLED': ''}
-            else: 
-                inner_left_edge = self.x + CORNER_CONSTANT
-                inner_right_edge = self.x + BLOCK_WIDTH - CORNER_CONSTANT 
-                inner_upper_edge = self.y + CORNER_CONSTANT
-                #Not only have I not tested this, I haven't even proved it correct!
-                #TO THE BLACKBOARD!!!
-                #Case I
-                if ballrect.x + BALL_WIDTH >= inner_left_edge and ballrect.x <= inner_right_edge and ballrect.y < inner_upper_edge:
-                    return {'AIAR': 'y'} # Case I
-                elif ballrect.x + BALL_WIDTH >= inner_left_edge and ballrect.x <= inner_right_edge and ballrect.y > inner_upper_edge:
-                    return {'AIAR': 'y'} # Case III
-                else: #Cases II and IV, since the only case that is not a corner collision but is still a collision  is a case where we would reflect on the x axis.
-                    return {'AIAR': 'x'}
+        self.ccounter-=1
+        self.change_color()
+        if ballrect.collidelist([self.ul_corner,self.ll_corner,self.ur_corner,self.lr_corner]) > -1:
+            return {'CORNER_ENABLED': ''}
+        else: 
+            inner_left_edge = self.x + CORNER_CONSTANT
+            inner_right_edge = self.x + BLOCK_WIDTH - CORNER_CONSTANT 
+            inner_upper_edge = self.y + CORNER_CONSTANT
+            #Not only have I not tested this, I haven't even proved it correct!
+            #TO THE BLACKBOARD!!!
+            #Case I
+            if ballrect.x + BALL_WIDTH >= inner_left_edge and ballrect.x <= inner_right_edge and ballrect.y < inner_upper_edge:
+                return {'AIAR': 'y'} # Case I
+            elif ballrect.x + BALL_WIDTH >= inner_left_edge and ballrect.x <= inner_right_edge and ballrect.y > inner_upper_edge:
+                return {'AIAR': 'y'} # Case III
+            else: #Cases II and IV, since the only case that is not a corner collision but is still a collision  is a case where we would reflect on the x axis.
+                return {'AIAR': 'x'}
 
     #Changes the brick color in response to a collision.
     def change_color(self):
