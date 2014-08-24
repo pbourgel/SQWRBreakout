@@ -32,7 +32,7 @@ def main():
     pdl = Paddle(WHITE, PADDLE_TOP, PADDLE_LEFT)
 
     bl = Ball(WHITE, BALL_TOP, BALL_LEFT, 0, -1)
-    game_speed = 30
+    game_speed = 60
     speedup = 0
     reset = False
 
@@ -81,7 +81,7 @@ def main():
     
         #     the paddle
         if pygame.Rect.colliderect(bl.ball_rect(),pdl.paddle_rect()):
-            bl.process_collision(pdl.on_collide(bl.ball_rect()))
+            bl.process_collision(pdl.on_collide(bl))
     
         #     the bottom of the screen
         if bl.ball_rect().bottom >= SCREENHEIGHT:

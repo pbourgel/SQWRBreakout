@@ -44,7 +44,7 @@ class Wall():
         self.rect = pygame.Rect(x,y,width,height)
 
     def on_collide(self):
-        return ['AIAR', self.axis]
+        return {'AIAR': self.axis}
 
 class Paddle():
     def __init__(self, color, x, y):
@@ -58,12 +58,13 @@ class Paddle():
     def paddle_rect(self):
         return self.rect
 
-    def on_collide(self, ballrect):
-        if pygame.Rect.colliderect(self.ul_corner,ballrect.lr_corner) or pygame.Rect.colliderect(self.ur_corner,ballrect.ll_corner):
+    def on_collide(self, ball):
+        if pygame.Rect.colliderect(self.ul_corner,ball.lr_corner) or pygame.Rect.colliderect(self.ur_corner,ball.ll_corner):
             return {'CORNER_ENABLED': ''}
-        ball_center = int((ballrect.x + BALL_WIDTH) / 2)
-        warp_offset = ball_center - (self.x + (INSIDE_PADDLE_WIDTH / 2))
-        return {'WARP': warp_offset / BLOCK_WIDTH}
+        ball_center = int(ball.rect.x + (BALL_WIDTH / 2))
+        warp_offset = float((ball_center - (self.rect.x + CORNER_CONSTANT)) / BLOCK_WIDTH)
+        print 'in on_collide, warp_offset = ' + str(warp_offset)
+        return {'WARP': warp_offset,'AIAR': 'y'}
 
     def move_paddle(self,direction):
         if direction == '-' and self.x > PADDLE_SPEED:

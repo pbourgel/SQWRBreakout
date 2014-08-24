@@ -82,6 +82,7 @@ class Ball:
         if 'AIAR' in rules:
             self.reflect_aiar(rules['AIAR'])
         if 'WARP' in rules:
+            print 'In WARP, offset value: ' + str(rules['WARP'])
             self.reflect_warp(rules['WARP'])
         if 'CORNER_ENABLED' in rules:
             self.reflect_corner()
