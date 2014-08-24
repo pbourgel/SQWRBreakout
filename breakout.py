@@ -94,6 +94,8 @@ def main():
                         pdl.move_paddle('-')
                     elif event.key == K_RIGHT:
                         pdl.move_paddle('+')
+                    elif event.key == K_ESCAPE:
+                        reset = True
                 #if you wanted to make the paddle move around the level, which I believe exists in exactly ZERO
                 #Breakout/Arkanoid games (first time for everything, right?), you would add another conditional
                 #and tweak Paddle.move_paddle()
