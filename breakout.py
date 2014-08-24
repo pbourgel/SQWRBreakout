@@ -61,7 +61,7 @@ def main():
         # check for collisions against...
         #     the walls
         for wall in walls:
-            if pygame.Rect.colliderect(wall,bl.ball_rect()):
+            if pygame.Rect.colliderect(wall.rect,bl.ball_rect()):
                 bl.process_collision(wall.on_collide())
         #     the blocks
         for block in reversed(level_array):
@@ -75,11 +75,11 @@ def main():
     
     
         #     the paddle
-        if pygame.Rect.colliderect(bl.ball_rect(),paddle_rect()):
+        if pygame.Rect.colliderect(bl.ball_rect(),pdl.paddle_rect()):
             bl.process_collision(paddle.on_collide(bl.ball_rect()))
     
         #     the bottom of the screen
-        if bl.ball_rect().bottom >= SCREEN_HEIGHT:
+        if bl.ball_rect().bottom >= SCREENHEIGHT:
             reset = True  
     
         # handle paddle movement
@@ -102,10 +102,11 @@ def main():
         
         # check for victory condition (all blocks have ccounter == 0)
         # of course you would want to change this if you wanted multiple levels
-        if len(filter(level_array,lambda block: block.ccounter > 0)) == 0
+        if len(filter(lambda block: block.ccounter > 0,level_array)) == 0:
             reset = True
     
         #tick the FPS clock
+        pygame.display.update()
         FPSCLOCK.tick(game_speed)
 
 def load_and_draw_level():

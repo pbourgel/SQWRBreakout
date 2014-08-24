@@ -41,6 +41,7 @@ class Wall():
     def __init__(self, x, y, width, height, axis):
         self.axis = axis
         self.color = BLACK
+        self.rect = pygame.Rect(x,y,width,height)
 
     def on_collide(self):
         return ['AIAR', self.axis]
@@ -68,7 +69,7 @@ class Paddle():
         if direction == '-' and self.x > PADDLE_SPEED:
             self.x -= PADDLE_SPEED
             self.rect.move(PADDLE_SPEED,0)
-        elif direction =='+' and (self.x + PADDLE_WIDTH < (SCREENWIDTH - PADDLE_SPEED):
+        elif direction == '+' and (self.x + PADDLE_WIDTH) < (SCREENWIDTH - PADDLE_SPEED):
             self.x += PADDLE_SPEED
             self.rect.move(PADDLE_SPEED,0)
 
