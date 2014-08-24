@@ -31,7 +31,7 @@ def main():
     level_array = load_and_draw_level()
     pdl = Paddle(WHITE, PADDLE_TOP, PADDLE_LEFT)
 
-    bl = Ball(WHITE, BALL_TOP, BALL_LEFT, 0, 1)
+    bl = Ball(WHITE, BALL_TOP, BALL_LEFT, 0, -1)
     game_speed = 30
     speedup = 0
     reset = False
@@ -40,6 +40,7 @@ def main():
     top_wall = Wall(0,0,SCREENWIDTH,1,'y')
     right_wall = Wall(SCREENWIDTH-1,1,1,SCREENHEIGHT,'x')
     walls = [left_wall, top_wall, right_wall]
+    
     
     pygame.draw.rect(DISPLAY, bl.color, bl.ball_rect())
     pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
@@ -57,7 +58,11 @@ def main():
 
     while reset == False:
         # move the ball
+        DISPLAY.fill(BLACK)
+        draw_level(level_array)
         bl.update_position()
+        pygame.draw.rect(DISPLAY, bl.color, bl.ball_rect())
+        pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
         # check for collisions against...
         #     the walls
         for wall in walls:
@@ -76,7 +81,7 @@ def main():
     
         #     the paddle
         if pygame.Rect.colliderect(bl.ball_rect(),pdl.paddle_rect()):
-            bl.process_collision(paddle.on_collide(bl.ball_rect()))
+            bl.process_collision(pdl.on_collide(bl.ball_rect()))
     
         #     the bottom of the screen
         if bl.ball_rect().bottom >= SCREENHEIGHT:
@@ -85,17 +90,19 @@ def main():
         # handle paddle movement
         #by the way, if you had a powerup where the paddle has little guns
         #attached to shoot the blocks, some keyboard handling code might be here.
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == KEYDOWN:
-                    if event.key == K_LEFT:
-                        pdl.move_paddle('-')
-                    elif event.key == K_RIGHT:
-                        pdl.move_paddle('+')
-                    elif event.key == K_ESCAPE:
-                        reset = True
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    pdl.move_paddle('-')
+                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+                elif event.key == K_RIGHT:
+                    pdl.move_paddle('+')
+                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
+                elif event.key == K_ESCAPE:
+                    reset = True
                 #if you wanted to make the paddle move around the level, which I believe exists in exactly ZERO
                 #Breakout/Arkanoid games (first time for everything, right?), you would add another conditional
                 #and tweak Paddle.move_paddle()

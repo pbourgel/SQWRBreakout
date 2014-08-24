@@ -67,11 +67,11 @@ class Paddle():
 
     def move_paddle(self,direction):
         if direction == '-' and self.x > PADDLE_SPEED:
-            self.x -= PADDLE_SPEED
-            self.rect.move(PADDLE_SPEED,0)
+#            self.rect.x -= PADDLE_SPEED
+            self.rect.move_ip((PADDLE_SPEED*-1),0)
         elif direction == '+' and (self.x + PADDLE_WIDTH) < (SCREENWIDTH - PADDLE_SPEED):
-            self.x += PADDLE_SPEED
-            self.rect.move(PADDLE_SPEED,0)
+#            self.rect.x += PADDLE_SPEED
+            self.rect.move_ip(PADDLE_SPEED,0)
 
 class Block():
     def __init__(self, ccounter, rct):
@@ -133,9 +133,9 @@ class Block():
         if ballrect.collidelist([self.ul_corner,self.ll_corner,self.ur_corner,self.lr_corner]) > -1:
             return {'CORNER_ENABLED': ''}
         else: 
-            inner_left_edge = self.x + CORNER_CONSTANT
-            inner_right_edge = self.x + BLOCK_WIDTH - CORNER_CONSTANT 
-            inner_upper_edge = self.y + CORNER_CONSTANT
+            inner_left_edge = self.rect.x + CORNER_CONSTANT
+            inner_right_edge = self.rect.x + BLOCK_WIDTH - CORNER_CONSTANT 
+            inner_upper_edge = self.rect.y + CORNER_CONSTANT
             #Not only have I not tested this, I haven't even proved it correct!
             #TO THE BLACKBOARD!!!
             #Case I

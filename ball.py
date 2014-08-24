@@ -42,11 +42,11 @@ class Ball:
 #        self.ll_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x, 2, 2)
 #        self.ur_corner = pygame.Rect(self.y, self.x + (BALL_WIDTH - 2), 2, 2)
 #        self.lr_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x + (BALL_WIDTH - 2), 2, 2)
-         self.rect.move(self.dx,self.dy)
-         self.ul_corner.move(self.dx,self.dy)
-         self.ll_corner.move(self.dx,self.dy)
-         self.ur_corner.move(self.dx,self.dy)
-         self.lr_corner.move(self.dx,self.dy)
+         self.rect.move_ip(self.dx,self.dy)
+         self.ul_corner.move_ip(self.dx,self.dy)
+         self.ll_corner.move_ip(self.dx,self.dy)
+         self.ur_corner.move_ip(self.dx,self.dy)
+         self.lr_corner.move_ip(self.dx,self.dy)
 
     def ball_rect(self):
         return self.rect    
