@@ -31,7 +31,7 @@ def main():
     level_array = load_and_draw_level()
     pdl = Paddle(WHITE, PADDLE_TOP, PADDLE_LEFT)
 
-    bl = Ball(WHITE, BALL_TOP, BALL_LEFT, 0, -1)
+    bl = Ball(WHITE, BALL_TOP, BALL_LEFT, 0, -3)
     game_speed = 60
     speedup = 0
     reset = False
@@ -61,6 +61,7 @@ def main():
     while reset == False:
         # move the ball
         DISPLAY.fill(BLACK)
+        collided = False
         draw_level(level_array)
         bl.update_position()
         pygame.draw.rect(DISPLAY, bl.color, bl.ball_rect())
@@ -72,8 +73,9 @@ def main():
                 bl.process_collision(wall.on_collide())
         #     the blocks
         for block in reversed(level_array):
-            if block.ccounter > 0 and pygame.Rect.colliderect(block.rect,bl.ball_rect()):
-                bl.process_collision(block.on_collide(bl.ball_rect()))
+            if block.ccounter > 0 and collided == False and pygame.Rect.colliderect(block.rect,bl.ball_rect()):
+                bl.process_collision(block.on_collide(bl))
+                collided = True
         #Why reversed?  It's probably the case that the blocks towards the 
         #end of the array (and therefore closer to the paddle) are more likely
         #to collide with the ball on an arbitrary check, so I start from the 

@@ -24,10 +24,16 @@ class Ball:
         self.dx = dx
         self.dy = dy
         self.rect = pygame.Rect(self.y, self.x, BALL_WIDTH, BALL_HEIGHT)
-        self.ul_corner = pygame.Rect(self.y, self.x, 2, 2)
-        self.ll_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x, 2, 2)
-        self.ur_corner = pygame.Rect(self.y, self.x + (BALL_WIDTH - 2), 2, 2)
-        self.lr_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x + (BALL_WIDTH - 2), 2, 2)
+        
+        self.top_edge = pygame.Rect(self.rect.topleft[1],self.rect.topleft[0],BALL_WIDTH,1) 
+        self.right_edge = pygame.Rect(self.rect.topright[1],self.rect.topright[0],1,BALL_HEIGHT)
+        self.bottom_edge = pygame.Rect(self.rect.bottomleft[1],self.rect.bottomleft[0],BALL_WIDTH,1)
+        self.left_edge = pygame.Rect(self.rect.topleft[1],self.rect.topleft[0],1,BALL_WIDTH) 
+
+        self.ul_corner = pygame.Rect(self.y, self.x, CORNER_CONSTANT, CORNER_CONSTANT)
+        self.ll_corner = pygame.Rect(self.y + (BALL_HEIGHT - CORNER_CONSTANT), self.x, CORNER_CONSTANT, CORNER_CONSTANT)
+        self.ur_corner = pygame.Rect(self.y, self.x + (BALL_WIDTH - CORNER_CONSTANT), CORNER_CONSTANT, CORNER_CONSTANT)
+        self.lr_corner = pygame.Rect(self.y + (BALL_HEIGHT - CORNER_CONSTANT), self.x + (BALL_WIDTH - CORNER_CONSTANT), CORNER_CONSTANT, CORNER_CONSTANT)
 
     def get_corners(self):
         return self.ul_corner
@@ -47,6 +53,10 @@ class Ball:
          self.ll_corner.move_ip(self.dx,self.dy)
          self.ur_corner.move_ip(self.dx,self.dy)
          self.lr_corner.move_ip(self.dx,self.dy)
+         self.top_edge.move_ip(self.dx,self.dy)
+         self.right_edge.move_ip(self.dx,self.dy)
+         self.bottom_edge.move_ip(self.dx,self.dy)
+         self.left_edge.move_ip(self.dx,self.dy)
 
     def ball_rect(self):
         return self.rect    
@@ -58,8 +68,10 @@ class Ball:
     def reflect_aiar(self, axis):
         if axis == 'x':
             self.dx *= -1
+            #self.update_position()
         elif axis == 'y':
             self.dy *= -1
+            #self.update_position()        
         #And if you ever use this code as the basis for 3D Breakout,
         #I guess your code to reflect on the z axis might be here too.
         #I'm too dumb for >2D Breakout.
@@ -71,7 +83,9 @@ class Ball:
     #However, for reasons discussed over in the block collision code in bounceables.py,
     # we need to restrict dx to -2 < dx < 2.
     def reflect_warp(self,adjustment):
-        if self.dx + adjustment >= (CORNER_CONSTANT*-1) and self.dx+ adjustment <= CORNER_CONSTANT:
+#        if self.dx + adjustment > (CORNER_CONSTANT*-1) and self.dx+ adjustment < CORNER_CONSTANT:
+#            self.dx += adjustment
+        if self.dx + adjustment > -5 and self.dx+ adjustment < 5:
             self.dx += adjustment
 
     def reflect_corner(self):
