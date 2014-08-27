@@ -24,7 +24,7 @@
 
 #CORNER_ENABLED: If the ball hits in a small space designated the corner, 
 #it will multiply both dx and dy by -1.
-
+from __future__ import division
 from constants import *
 import pygame
 
@@ -61,16 +61,16 @@ class Paddle():
     def on_collide(self, ball):
         if pygame.Rect.colliderect(self.ul_corner,ball.lr_corner) or pygame.Rect.colliderect(self.ur_corner,ball.ll_corner):
             return {'CORNER_ENABLED': ''}
-        ball_center = int(ball.rect.x + (BALL_WIDTH / 2))
-        warp_offset = float((ball_center - (self.rect.x + CORNER_CONSTANT)) / BLOCK_WIDTH)
+        ball_center = ball.rect.midbottom[0]
+        warp_offset = (ball_center - self.rect.midtop[0]) / BLOCK_WIDTH
         print 'in on_collide, warp_offset = ' + str(warp_offset)
         return {'WARP': warp_offset,'AIAR': 'y'}
 
     def move_paddle(self,direction):
-        if direction == '-' and self.x > PADDLE_SPEED:
+        if direction == '-' and self.rect.x > PADDLE_SPEED and self.rect.x > 0:
 #            self.rect.x -= PADDLE_SPEED
             self.rect.move_ip((PADDLE_SPEED*-1),0)
-        elif direction == '+' and (self.x + PADDLE_WIDTH) < (SCREENWIDTH - PADDLE_SPEED):
+        elif direction == '+' and (self.rect.x + PADDLE_WIDTH) < SCREENWIDTH:
 #            self.rect.x += PADDLE_SPEED
             self.rect.move_ip(PADDLE_SPEED,0)
 

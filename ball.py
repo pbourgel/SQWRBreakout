@@ -1,4 +1,5 @@
 import pygame
+import math
 from constants import *
 
 #AIAR: Angle of incidence equals angle of reflection, or in this 
@@ -85,7 +86,12 @@ class Ball:
     def reflect_warp(self,adjustment):
 #        if self.dx + adjustment > (CORNER_CONSTANT*-1) and self.dx+ adjustment < CORNER_CONSTANT:
 #            self.dx += adjustment
-        if self.dx + adjustment > -5 and self.dx+ adjustment < 5:
+        if adjustment > -1 and adjustment < 0 and self.dx == 0:
+            adjustment = math.floor(adjustment)
+        if adjustment > 0 and adjustment < 1 and self.dx == 0:
+            adjustment = math.ceil(adjustment)
+
+        if self.dx + adjustment > -BALL_SPEED and self.dx + adjustment < BALL_SPEED:
             self.dx += adjustment
 
     def reflect_corner(self):
