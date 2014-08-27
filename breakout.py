@@ -82,7 +82,6 @@ def main():
         #end and work my way back to save some loops.  We also do short-circuit
         #evaluation via the color counter to spare some colliderect calls
     
-    
         #     the paddle
         if pygame.Rect.colliderect(bl.ball_rect(),pdl.paddle_rect()):
             bl.process_collision(pdl.on_collide(bl))
@@ -101,23 +100,15 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
                      left_key_pressed = True
-#                    pdl.move_paddle('-')
-#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 elif event.key == K_RIGHT:
                      right_key_pressed = True
-#                    pdl.move_paddle('+')
-#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 elif event.key == K_ESCAPE:
                     reset = True
             if event.type == KEYUP:
                 if event.key == K_LEFT:
                      left_key_pressed = False
-#                    pdl.move_paddle('-')
-#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 elif event.key == K_RIGHT:
                      right_key_pressed = False
-#                    pdl.move_paddle('+')
-#                    pygame.draw.rect(DISPLAY, pdl.color, pdl.paddle_rect())
                 #if you wanted to make the paddle move around the level, which I believe exists in exactly ZERO
                 #Breakout/Arkanoid games (first time for everything, right?), you would add another conditional
                 #and tweak Paddle.move_paddle()

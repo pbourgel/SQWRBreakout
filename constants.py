@@ -25,7 +25,7 @@ SCREENHEIGHT = 700
 BLOCKS_ACROSS = 29
 BLOCKS_DOWN = 20
 
-#It's all derived from the dimensions of the block.
+#Almost all of it is derived from the dimensions of the block.
 #Ball should be 1/3rd block width x 1/3rd block width
 #paddle 2 blocks by 1, but with enough area for 
 #"corner squares"

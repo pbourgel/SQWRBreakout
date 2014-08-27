@@ -1,3 +1,18 @@
+###############################################################################
+#                                                                             #
+# levels.py                                                                   #
+#                                                                             #
+# Contains all the code for reading and generating levels.  Later developers  #
+# could add code to load these as a CSV file, or tweak it so the blocks have  #
+# special properties other than changing color.                               #
+#                                                                             #
+# Important classes:                                                          #
+# LevelFactory: Takes an array of numbers and "manufactures" Block objects.   #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
 from constants import *
 from bounceables import *
 
@@ -32,12 +47,7 @@ class LevelFactory:
         for x in range(0,len(level)-1):
             if (x % BLOCKS_ACROSS) == 0:
                 vertical_offset_index+=1
-            self.block_array.append(Block(level[x],pygame.Rect(((x % (BLOCKS_ACROSS))*BLOCK_WIDTH,(vertical_offset_index*BLOCK_HEIGHT),BLOCK_WIDTH,BLOCK_HEIGHT+1))))
-
-
-#        for number in level:
-#            newblock = Block(level[number])
-#            self.block_array.append(newblock)
+            self.block_array.append(Block(level[x],pygame.Rect(((x % (BLOCKS_ACROSS))*BLOCK_WIDTH,(vertical_offset_index*BLOCK_HEIGHT),BLOCK_WIDTH,BLOCK_HEIGHT))))
 
 
             
