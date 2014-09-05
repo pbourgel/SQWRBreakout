@@ -1,3 +1,18 @@
+###############################################################################
+#                                                                             #
+# ball.py                                                                     #
+#                                                                             #
+# Contains much of the important code for the ball collison                   #
+# could add code to load these as a CSV file, or tweak it so the blocks have  #
+# special properties other than changing color.                               #
+#                                                                             #
+# Important classes:                                                          #
+# LevelFactory: Takes an array of numbers and "manufactures" Block objects.   #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+
 import pygame
 import math
 from constants import *
@@ -9,9 +24,9 @@ from constants import *
 
 #SPEED: colliding object imparts some speed to the ball when it collides.
 #increase the frame rate or scale up the ball movement speed?
-#For this case I'm just going to increase the frame rate, which means
-#it doesn't make much sense to handle it as a Ball class method.
-#This will be handled in breakout.py
+#I'm leaving this one to the player.  You'll have to refactor 
+#Ball.process_collision and Paddle.on_collide, and see what adding it does to
+#the game.
 
 #CORNER_ENABLED: If the ball hits in a small space designated the corner, 
 #it will multiply both dx and dy by -1.
@@ -26,39 +41,24 @@ class Ball:
         self.dy = dy
         self.rect = pygame.Rect(self.y, self.x, BALL_WIDTH, BALL_HEIGHT)
         
-        self.top_edge = pygame.Rect(self.rect.topleft[1],self.rect.topleft[0],BALL_WIDTH,1) 
-        self.right_edge = pygame.Rect(self.rect.topright[1],self.rect.topright[0],1,BALL_HEIGHT)
-        self.bottom_edge = pygame.Rect(self.rect.bottomleft[1],self.rect.bottomleft[0],BALL_WIDTH,1)
-        self.left_edge = pygame.Rect(self.rect.topleft[1],self.rect.topleft[0],1,BALL_WIDTH) 
-
         self.ul_corner = pygame.Rect(self.y, self.x, CORNER_CONSTANT, CORNER_CONSTANT)
         self.ll_corner = pygame.Rect(self.y + (BALL_HEIGHT - CORNER_CONSTANT), self.x, CORNER_CONSTANT, CORNER_CONSTANT)
         self.ur_corner = pygame.Rect(self.y, self.x + (BALL_WIDTH - CORNER_CONSTANT), CORNER_CONSTANT, CORNER_CONSTANT)
         self.lr_corner = pygame.Rect(self.y + (BALL_HEIGHT - CORNER_CONSTANT), self.x + (BALL_WIDTH - CORNER_CONSTANT), CORNER_CONSTANT, CORNER_CONSTANT)
 
-    def get_corners(self):
-        return self.ul_corner
-
     #move the x and y coordinates by dx and dy
     #update a few other things 
+    #a quick note, since the pygame documentation confused me a little:
+    #move returns a new rectangle object with the new position
+    #move_ip changes the state of the existing rectangle object so that the top left corner has coordinates (x+dx,y+dy)
     def update_position(self):
-#        self.x += self.dx
-#        self.y += self.dy
-#        self.rect = pygame.Rect(self.y, self.x, BALL_WIDTH, BALL_HEIGHT)
-#        self.ul_corner = pygame.Rect(self.y, self.x, 2, 2)
-#        self.ll_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x, 2, 2)
-#        self.ur_corner = pygame.Rect(self.y, self.x + (BALL_WIDTH - 2), 2, 2)
-#        self.lr_corner = pygame.Rect(self.y + (BALL_HEIGHT - 2), self.x + (BALL_WIDTH - 2), 2, 2)
          self.rect.move_ip(self.dx,self.dy)
          self.ul_corner.move_ip(self.dx,self.dy)
          self.ll_corner.move_ip(self.dx,self.dy)
          self.ur_corner.move_ip(self.dx,self.dy)
          self.lr_corner.move_ip(self.dx,self.dy)
-         self.top_edge.move_ip(self.dx,self.dy)
-         self.right_edge.move_ip(self.dx,self.dy)
-         self.bottom_edge.move_ip(self.dx,self.dy)
-         self.left_edge.move_ip(self.dx,self.dy)
 
+    #Probably unnecessary abstraction
     def ball_rect(self):
         return self.rect    
 
@@ -82,10 +82,8 @@ class Ball:
     #warp it a little bit, else we'll just have a ball going straight
     #up and straight down, and that's no fun.
     #However, for reasons discussed over in the block collision code in bounceables.py,
-    # we need to restrict dx to -2 < dx < 2.
+    # we need to restrict dx to -BALL_SPEED < dx < BALL_SPEED.
     def reflect_warp(self,adjustment):
-#        if self.dx + adjustment > (CORNER_CONSTANT*-1) and self.dx+ adjustment < CORNER_CONSTANT:
-#            self.dx += adjustment
         if adjustment > -1 and adjustment < 0 and self.dx == 0:
             adjustment = math.floor(adjustment)
         if adjustment > 0 and adjustment < 1 and self.dx == 0:
@@ -93,16 +91,30 @@ class Ball:
 
         if self.dx + adjustment > -BALL_SPEED and self.dx + adjustment < BALL_SPEED:
             self.dx += adjustment
+        elif self.dx + adjustment < -BALL_SPEED:
+            self.dx = -BALL_SPEED
+        elif self.dx + adjustment > BALL_SPEED:
+            self.dx = BALL_SPEED
 
+        if self.dx < 0 and self.dx > -1:
+            self.dx = -1
+        if self.dx > 0 and self.dx < 1:
+            self.dx = 1
+        #print 'in reflect_warp:' + str(self.dx)
+
+    #If it reflects off a specific corner (defined in the block collide code),
+    #we want it to completely reverse dx and dy
     def reflect_corner(self):
         self.dx *= -1
         self.dy *= -1
 
-    def process_collision(self,rules,block=None):
+    #Handles calls to the different reflection functions.
+    #You will want to handle paddle speed reflection here
+    def process_collision(self,rules):
         if 'AIAR' in rules:
             self.reflect_aiar(rules['AIAR'])
         if 'WARP' in rules:
-            print 'In WARP, offset value: ' + str(rules['WARP'])
+            #print 'In WARP, offset value: ' + str(rules['WARP'])
             self.reflect_warp(rules['WARP'])
         if 'CORNER_ENABLED' in rules:
             self.reflect_corner()

@@ -10,7 +10,6 @@
 #                                                                             #
 ###############################################################################
 
-#FPS = 30
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 RED = (255, 0, 0)
@@ -27,15 +26,16 @@ BLOCKS_DOWN = 20
 
 #Almost all of it is derived from the dimensions of the block.
 #Ball should be 1/3rd block width x 1/3rd block width
-#paddle 2 blocks by 1, but with enough area for 
-#"corner squares"
+#paddle 2 blocks by 1
+#This way, you can change the screenwidth and block dimesions,
+#and almost everything will scale up or down.
 BLOCK_WIDTH = 30
 BLOCK_HEIGHT = 15
 CORNER_CONSTANT = 2
 
 BALL_WIDTH = BLOCK_WIDTH / 3 
 BALL_HEIGHT = BLOCK_WIDTH / 3
-BALL_SPEED = 5
+BALL_SPEED = 3
 
 PADDLE_WIDTH = (BLOCK_WIDTH * 2) + (2 * CORNER_CONSTANT) + 1
 INSIDE_PADDLE_WIDTH = (BLOCK_WIDTH * 2)
@@ -44,5 +44,6 @@ PADDLE_TOP = SCREENHEIGHT - (BLOCK_HEIGHT * 5)
 PADDLE_LEFT = (SCREENWIDTH / 2) - BLOCK_WIDTH
 PADDLE_SPEED = 5
 
+#This is the starting position of the ball
 BALL_TOP = PADDLE_TOP - (BLOCK_HEIGHT * 2)
 BALL_LEFT = PADDLE_LEFT + (BLOCK_WIDTH - 5)
